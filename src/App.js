@@ -5,15 +5,14 @@ const emailRegex = RegExp(
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 );
 
+
 const formValid = ({ formErrors, ...rest }) => {
   let valid = true;
 
-  // validate form errors being empty
   Object.values(formErrors).forEach(val => {
     val.length > 0 && (valid = false);
   });
 
-  // validate the form was filled out
   Object.values(rest).forEach(val => {
     val === null && (valid = false);
   });
@@ -35,7 +34,8 @@ class App extends Component {
         lastName: "",
         email: "",
         password: "",
-        address: ""
+        address: "",
+        telephone: '',
       }
     };
   }
@@ -47,6 +47,8 @@ class App extends Component {
       console.log(`
         First Name: ${this.state.firstName}
         Last Name: ${this.state.lastName}
+        Address: ${this.state.address}
+        Telephone: ${this.state.telephone}
         Email: ${this.state.email}
         Password: ${this.state.password}
       `);
@@ -69,11 +71,20 @@ class App extends Component {
         formErrors.lastName =
           value.length < 3 ? "minimum 3 characaters required" : "";
         break;
+      case "address":
+        formErrors.address =
+          value.length < 3 ? "minimum 3 characaters required" : "";
+        break;
+      // case "telephone":
+      //   formErrors.telephone =
+      //     value < value && isNaN(Number(value)) ? 'Must be a number' : "";
+      //   break;
       case "email":
         formErrors.email = emailRegex.test(value)
           ? ""
           : "invalid email address";
         break;
+
       case "password":
         formErrors.password =
           value.length < 6 ? "minimum 6 characaters required" : "";
@@ -132,11 +143,22 @@ class App extends Component {
                 noValidate
                 onChange={this.handleChange}
               />
-              {formErrors.lastName.length > 0 && (
-                <span className="errorMessage">{formErrors.lastName}</span>
-              )}
             </div>
-
+            <div className="telephone">
+              <label htmlFor="telephone">Telephone</label>
+              <input
+                className={formErrors.telephone.value > 0 ? "error" : null}  
+                placeholder="telephone"
+                type="telephone"
+                name="telephone"
+                noValidate
+                onChange={this.handleChange}
+              />
+              {/* {formErrors.telephone.value > 0 && (
+                <span className="errorMessage">{formErrors.telephone}</span>
+              )} */}
+            </div>
+        
             <div className="email">
               <label htmlFor="email">Email</label>
               <input
@@ -176,3 +198,4 @@ class App extends Component {
 }
 
 export default App;
+
